@@ -25,7 +25,7 @@ npm install
 - Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
 
 ```env
-DATABASE_URL="postgresql://postgres:SUA_SENHA@localhost:5432/be_audio"
+DATABASE_URL="postgresql://SEU_USUARIO:SUA_SENHA@localhost:5432/be_audio"
 JWT_SECRET="sua_chave_jwt_super_secreta"
 ```
 
