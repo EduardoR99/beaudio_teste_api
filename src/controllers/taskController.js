@@ -2,14 +2,14 @@ const prisma = require('../configs/prisma');
 
 
 exports.create = async (req, res) => {
-  const { title, description, taskListId } = req.body;
+  const { title, description, taskListId, time } = req.body; 
   const userId = req.user.id;
   try {
     const list = await prisma.taskList.findFirst({ where: { id: taskListId, userId } });
     if (!list) return res.status(404).json({ success: false, message: 'Lista não encontrada.' });
 
     const task = await prisma.task.create({
-      data: { title, description, taskListId }
+      data: { title, description, taskListId, time } 
     });
     res.status(201).json({ success: true, task });
   } catch (error) {
@@ -59,7 +59,7 @@ exports.getAll = async (req, res) => {
 
 exports.update = async (req, res) => {
   const { id } = req.params;
-  const { title, description, completed } = req.body;
+  const { title, description, completed, time } = req.body; 
   const userId = req.user.id;
   try {
     const task = await prisma.task.findUnique({ where: { id: Number(id) }, include: { taskList: true } });
@@ -69,7 +69,7 @@ exports.update = async (req, res) => {
 
     await prisma.task.update({
       where: { id: Number(id) },
-      data: { title, description, completed }
+      data: { title, description, completed, time } 
     });
     res.json({ success: true, message: 'Tarefa atualizada com sucesso.' });
   } catch (error) {

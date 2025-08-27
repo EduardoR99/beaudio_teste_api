@@ -76,11 +76,21 @@ exports.remove = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Lista não encontrada.' });
     }
 
+    // verificação de pendência da tarefa
+    const pendingTask = await prisma.task.findFirst({
+      where: {
+        taskListId: Number(id),
+        completed: false
+      }
+    });
+
+    if (pendingTask) {
+      return res.status(400).json({ success: false, message: 'Não é possível excluir uma lista com tarefas pendentes.' });
+    }
     await prisma.task.deleteMany({
       where: { taskListId: Number(id) }
     });
 
-  
     const deleted = await prisma.taskList.deleteMany({
       where: { id: Number(id), userId }
     });
